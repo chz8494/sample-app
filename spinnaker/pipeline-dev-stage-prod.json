@@ -10,7 +10,7 @@
     {
       "clusters": [
         {
-          "account": "local",
+          "account": "wt-dev",
           "application": "sample",
           "cloudProvider": "kubernetes",
           "containers": [
@@ -104,7 +104,7 @@
     {
       "clusters": [
         {
-          "account": "local",
+          "account": "wt-dev",
           "application": "sample",
           "cloudProvider": "kubernetes",
           "containers": [
@@ -156,8 +156,10 @@
             "paused": false,
             "revisionHistoryLimit": 2
           },
+          "dnsPolicy": "ClusterFirst",
           "events": [],
           "freeFormDetails": "canary",
+          "initContainers": [],
           "interestingHealthProviderNames": [
             "KubernetesContainer",
             "KubernetesPod"
@@ -189,7 +191,8 @@
       "type": "deploy"
     },
     {
-      "account": "local",
+      "account": "wt-dev",
+      "annotations": {},
       "application": "sample",
       "cloudProvider": "kubernetes",
       "cloudProviderType": "kubernetes",
@@ -200,6 +203,7 @@
             "curl",
             "http://sample-backend-canary:8080"
           ],
+          "envFrom": [],
           "envVars": [],
           "imageDescription": {
             "account": "tdlab",
@@ -214,8 +218,11 @@
         }
       ],
       "credentials": "local",
+      "dnsPolicy": "ClusterFirst",
+      "labels": {},
       "name": "BE Integration Tests Dev",
       "namespace": "default",
+      "nodeSelector": {},
       "refId": "7",
       "requisiteStageRefIds": [
         "3"
@@ -224,7 +231,7 @@
       "volumeSources": []
     },
     {
-      "account": "local",
+      "account": "wt-dev",
       "annotations": {},
       "application": "sample",
       "cloudProvider": "kubernetes",
@@ -236,6 +243,7 @@
             "curl",
             "http://sample-frontend-canary:80"
           ],
+          "envFrom": [],
           "envVars": [],
           "imageDescription": {
             "account": "tdlab",
@@ -250,9 +258,11 @@
         }
       ],
       "credentials": "local",
+      "dnsPolicy": "ClusterFirst",
       "labels": {},
       "name": "FE Integration Tests Dev",
       "namespace": "default",
+      "nodeSelector": {},
       "refId": "8",
       "requisiteStageRefIds": [
         "2"
@@ -286,7 +296,7 @@
     {
       "clusters": [
         {
-          "account": "local",
+          "account": "prod",
           "application": "sample",
           "cloudProvider": "kubernetes",
           "containers": [
@@ -336,15 +346,15 @@
             "paused": false,
             "revisionHistoryLimit": 2
           },
+          "dnsPolicy": "ClusterFirst",
           "events": [],
           "freeFormDetails": "prod",
+          "initContainers": [],
           "interestingHealthProviderNames": [
             "KubernetesContainer",
             "KubernetesPod"
           ],
-          "loadBalancers": [
-            "sample-backend-prod"
-          ],
+          "loadBalancers": [],
           "namespace": "default",
           "nodeSelector": {},
           "podAnnotations": {},
@@ -373,7 +383,7 @@
     {
       "clusters": [
         {
-          "account": "local",
+          "account": "prod",
           "application": "sample",
           "cloudProvider": "kubernetes",
           "containers": [
@@ -427,15 +437,15 @@
             "paused": false,
             "revisionHistoryLimit": 2
           },
+          "dnsPolicy": "ClusterFirst",
           "events": [],
           "freeFormDetails": "prod",
+          "initContainers": [],
           "interestingHealthProviderNames": [
             "KubernetesContainer",
             "KubernetesPod"
           ],
-          "loadBalancers": [
-            "sample-frontend-prod"
-          ],
+          "loadBalancers": [],
           "namespace": "default",
           "nodeSelector": {},
           "podAnnotations": {},
@@ -465,7 +475,7 @@
     {
       "clusters": [
         {
-          "account": "local",
+          "account": "prod",
           "application": "sample",
           "cloudProvider": "kubernetes",
           "containers": [
@@ -523,9 +533,7 @@
             "KubernetesContainer",
             "KubernetesPod"
           ],
-          "loadBalancers": [
-            "sample-backend-prod"
-          ],
+          "loadBalancers": [],
           "namespace": "default",
           "nodeSelector": {},
           "podAnnotations": {},
@@ -577,7 +585,7 @@
     {
       "clusters": [
         {
-          "account": "local",
+          "account": "prod",
           "application": "sample",
           "cloudProvider": "kubernetes",
           "containers": [
@@ -639,9 +647,7 @@
             "KubernetesContainer",
             "KubernetesPod"
           ],
-          "loadBalancers": [
-            "sample-frontend-prod"
-          ],
+          "loadBalancers": [],
           "namespace": "default",
           "nodeSelector": {},
           "podAnnotations": {},
@@ -669,7 +675,8 @@
       "type": "deploy"
     },
     {
-      "account": "local",
+      "account": "prod",
+      "annotations": {},
       "application": "sample",
       "cloudProvider": "kubernetes",
       "cloudProviderType": "kubernetes",
@@ -680,6 +687,7 @@
             "curl",
             "http://sample-backend-canary:8080"
           ],
+          "envFrom": [],
           "envVars": [],
           "imageDescription": {
             "account": "tdlab",
@@ -694,8 +702,11 @@
         }
       ],
       "credentials": "local",
+      "dnsPolicy": "ClusterFirst",
+      "labels": {},
       "name": "BE Integration Tests Stage",
       "namespace": "default",
+      "nodeSelector": {},
       "refId": "18",
       "requisiteStageRefIds": [
         "14"
@@ -704,7 +715,7 @@
       "volumeSources": []
     },
     {
-      "account": "local",
+      "account": "prod",
       "annotations": {},
       "application": "sample",
       "cloudProvider": "kubernetes",
@@ -716,6 +727,7 @@
             "curl",
             "http://sample-frontend-canary:80"
           ],
+          "envFrom": [],
           "envVars": [],
           "imageDescription": {
             "account": "tdlab",
@@ -730,9 +742,11 @@
         }
       ],
       "credentials": "local",
+      "dnsPolicy": "ClusterFirst",
       "labels": {},
       "name": "FE Integration Tests Stage",
       "namespace": "default",
+      "nodeSelector": {},
       "refId": "19",
       "requisiteStageRefIds": [
         "16"
