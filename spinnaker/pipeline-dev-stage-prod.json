@@ -584,7 +584,7 @@
           "args": [],
           "command": [
             "curl",
-            "http://sample-backend-canary:8080"
+            "http://sample-backend-stage:8080"
           ],
           "envFrom": [],
           "envVars": [],
@@ -636,7 +636,7 @@
                 },
                 {
                   "name": "BACKEND_URL",
-                  "value": "http://sample-backend-canary:8080/metadata"
+                  "value": "http://sample-backend-stage:8080/metadata"
                 }
               ],
               "imageDescription": {
@@ -768,5 +768,5 @@
       "type": "docker"
     }
   ],
-  "updateTs": "1528159931000"
+  "updateTs": "1528208088000"
 }
