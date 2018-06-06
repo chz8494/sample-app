@@ -1,0 +1,7 @@
+pipeline:
+  publish:
+    image: plugins/docker
+    registry: dockerlab.tdlab.ca:5001
+    secrets: [ docker_username, docker_password ]
+    repo: dockerlab.tdlab.ca:5001/test
+    tags: ${DRONE_COMMIT_SHA}
