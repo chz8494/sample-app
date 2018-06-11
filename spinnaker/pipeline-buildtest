@@ -1,0 +1,770 @@
+{
+  "appConfig": {},
+  "executionEngine": "v2",
+  "keepWaitingPipelines": true,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "parallel": true,
+  "parameterConfig": [],
+  "stages": [
+    {
+      "clusters": [
+        {
+          "account": "wt-dev",
+          "application": "sample",
+          "cloudProvider": "kubernetes",
+          "containers": [
+            {
+              "args": [],
+              "command": [],
+              "envVars": [
+                {
+                  "name": "COMPONENT",
+                  "value": "frontend"
+                },
+                {
+                  "name": "VERSION",
+                  "value": "${trigger['tag']}"
+                },
+                {
+                  "name": "BACKEND_URL",
+                  "value": "http://sample-backend-canary:8080/metadata"
+                }
+              ],
+              "imageDescription": {
+                "account": "tdlab",
+                "fromTrigger": true,
+                "imageId": "dockerlab.tdlab.ca:5001/buildtest:v.*",
+                "registry": "dockerlab.tdlab.ca:5001",
+                "repository": "buildtest",
+                "tag": "v.*"
+              },
+              "imagePullPolicy": "ALWAYS",
+              "limits": {},
+              "name": "test-buildtest",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http",
+                  "protocol": "TCP"
+                }
+              ],
+              "requests": {},
+              "volumeMounts": []
+            }
+          ],
+          "deployment": {
+            "deploymentStrategy": {
+              "rollingUpdate": {
+                "maxSurge": "100%",
+                "maxUnavailable": "0%"
+              },
+              "type": "RollingUpdate"
+            },
+            "enabled": true,
+            "minReadySeconds": 0,
+            "paused": false,
+            "revisionHistoryLimit": 2
+          },
+          "dnsPolicy": "ClusterFirst",
+          "events": [],
+          "freeFormDetails": "canary",
+          "initContainers": [],
+          "interestingHealthProviderNames": [
+            "KubernetesContainer",
+            "KubernetesPod"
+          ],
+          "loadBalancers": [
+            "sample-frontend-canary"
+          ],
+          "namespace": "default",
+          "nodeSelector": {},
+          "podAnnotations": {},
+          "provider": "kubernetes",
+          "region": "default",
+          "replicaSetAnnotations": {
+            "deployment.kubernetes.io/desired-replicas": "8",
+            "deployment.kubernetes.io/max-replicas": "16",
+            "deployment.kubernetes.io/revision": "40",
+            "deployment.kubernetes.io/revision-history": "12"
+          },
+          "securityGroups": [],
+          "stack": "frontend",
+          "strategy": "",
+          "targetSize": 1,
+          "terminationGracePeriodSeconds": 30,
+          "volumeSources": []
+        }
+      ],
+      "name": "Deploy Frontend Canary",
+      "refId": "2",
+      "requisiteStageRefIds": [],
+      "type": "deploy"
+    },
+    {
+      "clusters": [
+        {
+          "account": "wt-dev",
+          "application": "sample",
+          "cloudProvider": "kubernetes",
+          "containers": [
+            {
+              "args": [],
+              "command": [],
+              "envVars": [
+                {
+                  "name": "COMPONENT",
+                  "value": "backend"
+                },
+                {
+                  "name": "VERSION",
+                  "value": "${trigger['tag']}"
+                }
+              ],
+              "imageDescription": {
+                "account": "tdlab",
+                "fromTrigger": true,
+                "imageId": "dockerlab.tdlab.ca:5001/buildtest:v.*",
+                "registry": "dockerlab.tdlab.ca:5001",
+                "repository": "buildtest",
+                "tag": "v.*"
+              },
+              "imagePullPolicy": "ALWAYS",
+              "limits": {},
+              "name": "test-buildtest",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http",
+                  "protocol": "TCP"
+                }
+              ],
+              "requests": {},
+              "volumeMounts": []
+            }
+          ],
+          "deployment": {
+            "deploymentStrategy": {
+              "rollingUpdate": {
+                "maxSurge": "100%",
+                "maxUnavailable": "0%"
+              },
+              "type": "RollingUpdate"
+            },
+            "enabled": true,
+            "minReadySeconds": 0,
+            "paused": false,
+            "revisionHistoryLimit": 2
+          },
+          "dnsPolicy": "ClusterFirst",
+          "events": [],
+          "freeFormDetails": "canary",
+          "initContainers": [],
+          "interestingHealthProviderNames": [
+            "KubernetesContainer",
+            "KubernetesPod"
+          ],
+          "loadBalancers": [
+            "sample-backend-canary"
+          ],
+          "namespace": "default",
+          "nodeSelector": {},
+          "podAnnotations": {},
+          "provider": "kubernetes",
+          "region": "default",
+          "replicaSetAnnotations": {
+            "deployment.kubernetes.io/desired-replicas": "4",
+            "deployment.kubernetes.io/max-replicas": "8",
+            "deployment.kubernetes.io/revision": "28"
+          },
+          "securityGroups": [],
+          "stack": "backend",
+          "strategy": "",
+          "targetSize": 1,
+          "terminationGracePeriodSeconds": 30,
+          "volumeSources": []
+        }
+      ],
+      "name": "Deploy Backend Canary",
+      "refId": "3",
+      "requisiteStageRefIds": [],
+      "type": "deploy"
+    },
+    {
+      "account": "wt-dev",
+      "annotations": {},
+      "application": "sample",
+      "cloudProvider": "kubernetes",
+      "cloudProviderType": "kubernetes",
+      "containers": [
+        {
+          "args": [],
+          "command": [
+            "curl",
+            "http://sample-backend-canary:8080"
+          ],
+          "envVars": [],
+          "imageDescription": {
+            "account": "tdlab",
+            "fromTrigger": true,
+            "organization": "null",
+            "registry": "dockerlab.tdlab.ca:5001",
+            "repository": "buildtest",
+            "tag": "v.*"
+          },
+          "name": "1494826281215",
+          "ports": [],
+          "volumeMounts": []
+        }
+      ],
+      "credentials": "wt-dev",
+      "dnsPolicy": "ClusterFirst",
+      "labels": {},
+      "name": "BE Integration Tests",
+      "namespace": "default",
+      "nodeSelector": {},
+      "refId": "7",
+      "requisiteStageRefIds": [
+        "3"
+      ],
+      "type": "runJob",
+      "volumeSources": []
+    },
+    {
+      "account": "wt-dev",
+      "annotations": {},
+      "application": "sample",
+      "cloudProvider": "kubernetes",
+      "cloudProviderType": "kubernetes",
+      "containers": [
+        {
+          "args": [],
+          "command": [
+            "curl",
+            "http://sample-frontend-canary:80"
+          ],
+          "envVars": [],
+          "imageDescription": {
+            "account": "tdlab",
+            "fromTrigger": true,
+            "organization": "null",
+            "registry": "dockerlab.tdlab.ca:5001",
+            "repository": "buildtest",
+            "tag": "v.*"
+          },
+          "name": "1494826281215",
+          "ports": [],
+          "volumeMounts": []
+        }
+      ],
+      "credentials": "wt-dev",
+      "dnsPolicy": "ClusterFirst",
+      "labels": {},
+      "name": "FE Integration Tests",
+      "namespace": "default",
+      "nodeSelector": {},
+      "refId": "8",
+      "requisiteStageRefIds": [
+        "2"
+      ],
+      "type": "runJob",
+      "volumeSources": []
+    },
+    {
+      "failPipeline": true,
+      "instructions": "Do you want to deploy this image to Staging Environment?",
+      "judgmentInputs": [],
+      "name": "Push to Staging?",
+      "notifications": [],
+      "refId": "11",
+      "requisiteStageRefIds": [
+        "7",
+        "8"
+      ],
+      "type": "manualJudgment"
+    },
+    {
+      "clusters": [
+        {
+          "account": "prod",
+          "application": "sample",
+          "cloudProvider": "kubernetes",
+          "containers": [
+            {
+              "args": [],
+              "command": [],
+              "envFrom": [],
+              "envVars": [
+                {
+                  "name": "COMPONENT",
+                  "value": "backend"
+                },
+                {
+                  "name": "VERSION",
+                  "value": "${ trigger['tag'] }"
+                }
+              ],
+              "imageDescription": {
+                "account": "tdlab",
+                "fromTrigger": true,
+                "imageId": "dockerlab.tdlab.ca:5001/buildtest:v.*",
+                "registry": "dockerlab.tdlab.ca:5001",
+                "repository": "buildtest",
+                "tag": "v.*"
+              },
+              "imagePullPolicy": "ALWAYS",
+              "name": "test-buildtest",
+              "ports": [
+                {
+                  "containerPort": 80,
+                  "name": "http",
+                  "protocol": "TCP"
+                }
+              ],
+              "volumeMounts": []
+            }
+          ],
+          "deployment": {
+            "deploymentStrategy": {
+              "rollingUpdate": {
+                "maxSurge": "100%",
+                "maxUnavailable": "0%"
+              },
+              "type": "RollingUpdate"
+            },
+            "enabled": true,
+            "minReadySeconds": 0,
+            "paused": false,
+            "revisionHistoryLimit": 2
+          },
+          "dnsPolicy": "ClusterFirst",
+          "events": [],
+          "freeFormDetails": "prod",
+          "initContainers": [],
+          "interestingHealthProviderNames": [
+            "KubernetesContainer",
+            "KubernetesPod"
+          ],
+          "loadBalancers": [
+            "sample-backend-prod"
+          ],
+          "namespace": "default",
+          "nodeSelector": {},
+          "podAnnotations": {},
+          "provider": "kubernetes",
+          "region": "default",
+          "replicaSetAnnotations": {
+            "deployment.kubernetes.io/desired-replicas": "4",
+            "deployment.kubernetes.io/max-replicas": "8",
+            "deployment.kubernetes.io/revision": "31"
+          },
+          "securityGroups": [],
+          "stack": "backend",
+          "strategy": "",
+          "targetSize": 1,
+          "terminationGracePeriodSeconds": 30,
+          "volumeSources": []
+        }
+      ],
+      "name": "Deploy Backend Prod",
+      "refId": "12",
+      "requisiteStageRefIds": [
+        "14"
+      ],
+      "type": "deploy"
+    },
+    {
+      "clusters": [
+        {
+          "account": "prod",
+          "application": "sample",
+          "cloudProvider": "kubernetes",
+          "containers": [
+            {
+              "args": [],
+              "command": [],
+              "envFrom": [],
+              "envVars": [
+                {
+                  "name": "COMPONENT",
+                  "value": "frontend"
+                },
+                {
+                  "name": "VERSION",
+                  "value": "${ trigger['tag'] }"
+                },
+                {
+                  "name": "BACKEND_URL",
+                  "value": "http://sample-backend-prod:8080/metadata"
+                }
+              ],
+              "imageDescription": {
+                "account": "tdlab",
+                "fromTrigger": true,
+                "imageId": "dockerlab.tdlab.ca:5001/buildtest:v.*",
+                "registry": "dockerlab.tdlab.ca:5001",
+                "repository": "buildtest",
+                "tag": "v.*"
+              },
+              "imagePullPolicy": "ALWAYS",
+              "name": "test-buildtest",
+              "ports": [
+                {
+                  "containerPort": 80,
+                  "name": "http",
+                  "protocol": "TCP"
+                }
+              ],
+              "volumeMounts": []
+            }
+          ],
+          "deployment": {
+            "deploymentStrategy": {
+              "rollingUpdate": {
+                "maxSurge": "100%",
+                "maxUnavailable": "0%"
+              },
+              "type": "RollingUpdate"
+            },
+            "enabled": true,
+            "minReadySeconds": 0,
+            "paused": false,
+            "revisionHistoryLimit": 2
+          },
+          "dnsPolicy": "ClusterFirst",
+          "events": [],
+          "freeFormDetails": "prod",
+          "initContainers": [],
+          "interestingHealthProviderNames": [
+            "KubernetesContainer",
+            "KubernetesPod"
+          ],
+          "loadBalancers": [
+            "sample-frontend-prod"
+          ],
+          "namespace": "default",
+          "nodeSelector": {},
+          "podAnnotations": {},
+          "provider": "kubernetes",
+          "region": "default",
+          "replicaSetAnnotations": {
+            "deployment.kubernetes.io/desired-replicas": "8",
+            "deployment.kubernetes.io/max-replicas": "16",
+            "deployment.kubernetes.io/revision": "43",
+            "deployment.kubernetes.io/revision-history": "12"
+          },
+          "securityGroups": [],
+          "stack": "frontend",
+          "strategy": "",
+          "targetSize": 8,
+          "terminationGracePeriodSeconds": 30,
+          "volumeSources": []
+        }
+      ],
+      "name": "Deploy Frontend Prod",
+      "refId": "13",
+      "requisiteStageRefIds": [
+        "14"
+      ],
+      "type": "deploy"
+    },
+    {
+      "failPipeline": true,
+      "instructions": "Do you want to deploy this image to production?",
+      "judgmentInputs": [],
+      "name": "Push to Production?",
+      "notifications": [],
+      "refId": "14",
+      "requisiteStageRefIds": [
+        "16",
+        "18"
+      ],
+      "type": "manualJudgment"
+    },
+    {
+      "clusters": [
+        {
+          "account": "prod",
+          "application": "sample",
+          "cloudProvider": "kubernetes",
+          "containers": [
+            {
+              "args": [],
+              "command": [],
+              "envFrom": [],
+              "envVars": [
+                {
+                  "name": "COMPONENT",
+                  "value": "backend"
+                },
+                {
+                  "name": "VERSION",
+                  "value": "${trigger['tag']}"
+                }
+              ],
+              "imageDescription": {
+                "account": "tdlab",
+                "fromTrigger": true,
+                "imageId": "dockerlab.tdlab.ca:5001/buildtest:v.*",
+                "registry": "dockerlab.tdlab.ca:5001",
+                "repository": "buildtest",
+                "tag": "v.*"
+              },
+              "imagePullPolicy": "ALWAYS",
+              "limits": {},
+              "name": "test-buildtest",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http",
+                  "protocol": "TCP"
+                }
+              ],
+              "requests": {},
+              "volumeMounts": []
+            }
+          ],
+          "deployment": {
+            "deploymentStrategy": {
+              "rollingUpdate": {
+                "maxSurge": "100%",
+                "maxUnavailable": "0%"
+              },
+              "type": "RollingUpdate"
+            },
+            "enabled": true,
+            "minReadySeconds": 0,
+            "paused": false,
+            "revisionHistoryLimit": 2
+          },
+          "dnsPolicy": "ClusterFirst",
+          "events": [],
+          "freeFormDetails": "stage",
+          "initContainers": [],
+          "interestingHealthProviderNames": [
+            "KubernetesContainer",
+            "KubernetesPod"
+          ],
+          "loadBalancers": [
+            "sample-backend-stage"
+          ],
+          "namespace": "default",
+          "nodeSelector": {},
+          "podAnnotations": {},
+          "provider": "kubernetes",
+          "region": "default",
+          "replicaSetAnnotations": {
+            "deployment.kubernetes.io/desired-replicas": "4",
+            "deployment.kubernetes.io/max-replicas": "8",
+            "deployment.kubernetes.io/revision": "28"
+          },
+          "securityGroups": [],
+          "stack": "backend",
+          "strategy": "",
+          "targetSize": 1,
+          "terminationGracePeriodSeconds": 30,
+          "volumeSources": []
+        }
+      ],
+      "name": "Deploy Backend Stage",
+      "refId": "15",
+      "requisiteStageRefIds": [
+        "11"
+      ],
+      "type": "deploy"
+    },
+    {
+      "account": "prod",
+      "annotations": {},
+      "application": "sample",
+      "cloudProvider": "kubernetes",
+      "cloudProviderType": "kubernetes",
+      "containers": [
+        {
+          "args": [],
+          "command": [
+            "curl",
+            "http://sample-backend-stage:8080"
+          ],
+          "envFrom": [],
+          "envVars": [],
+          "imageDescription": {
+            "account": "tdlab",
+            "fromTrigger": true,
+            "organization": "null",
+            "registry": "dockerlab.tdlab.ca:5001",
+            "repository": "buildtest",
+            "tag": "v.*"
+          },
+          "name": "1494826281215",
+          "ports": [],
+          "volumeMounts": []
+        }
+      ],
+      "credentials": "prod",
+      "dnsPolicy": "ClusterFirst",
+      "labels": {},
+      "name": "BE Integration Stage Tests",
+      "namespace": "default",
+      "nodeSelector": {},
+      "refId": "16",
+      "requisiteStageRefIds": [
+        "15"
+      ],
+      "type": "runJob",
+      "volumeSources": []
+    },
+    {
+      "clusters": [
+        {
+          "account": "prod",
+          "application": "sample",
+          "cloudProvider": "kubernetes",
+          "containers": [
+            {
+              "args": [],
+              "command": [],
+              "envFrom": [],
+              "envVars": [
+                {
+                  "name": "COMPONENT",
+                  "value": "frontend"
+                },
+                {
+                  "name": "VERSION",
+                  "value": "${trigger['tag']}"
+                },
+                {
+                  "name": "BACKEND_URL",
+                  "value": "http://sample-backend-stage:8080/metadata"
+                }
+              ],
+              "imageDescription": {
+                "account": "tdlab",
+                "fromTrigger": true,
+                "imageId": "dockerlab.tdlab.ca:5001/buildtest:v.*",
+                "registry": "dockerlab.tdlab.ca:5001",
+                "repository": "buildtest",
+                "tag": "v.*"
+              },
+              "imagePullPolicy": "ALWAYS",
+              "limits": {},
+              "name": "test-buildtest",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http",
+                  "protocol": "TCP"
+                }
+              ],
+              "requests": {},
+              "volumeMounts": []
+            }
+          ],
+          "deployment": {
+            "deploymentStrategy": {
+              "rollingUpdate": {
+                "maxSurge": "100%",
+                "maxUnavailable": "0%"
+              },
+              "type": "RollingUpdate"
+            },
+            "enabled": true,
+            "minReadySeconds": 0,
+            "paused": false,
+            "revisionHistoryLimit": 2
+          },
+          "dnsPolicy": "ClusterFirst",
+          "events": [],
+          "freeFormDetails": "stage",
+          "initContainers": [],
+          "interestingHealthProviderNames": [
+            "KubernetesContainer",
+            "KubernetesPod"
+          ],
+          "loadBalancers": [
+            "sample-frontend-stage"
+          ],
+          "namespace": "default",
+          "nodeSelector": {},
+          "podAnnotations": {},
+          "provider": "kubernetes",
+          "region": "default",
+          "replicaSetAnnotations": {
+            "deployment.kubernetes.io/desired-replicas": "8",
+            "deployment.kubernetes.io/max-replicas": "16",
+            "deployment.kubernetes.io/revision": "40",
+            "deployment.kubernetes.io/revision-history": "12"
+          },
+          "securityGroups": [],
+          "stack": "frontend",
+          "strategy": "",
+          "targetSize": 1,
+          "terminationGracePeriodSeconds": 30,
+          "volumeSources": []
+        }
+      ],
+      "name": "Deploy Frontend Stage",
+      "refId": "17",
+      "requisiteStageRefIds": [
+        "11"
+      ],
+      "type": "deploy"
+    },
+    {
+      "account": "wt-dev",
+      "annotations": {},
+      "application": "sample",
+      "cloudProvider": "kubernetes",
+      "cloudProviderType": "kubernetes",
+      "containers": [
+        {
+          "args": [],
+          "command": [
+            "curl",
+            "http://sample-frontend-canary:80"
+          ],
+          "envVars": [],
+          "imageDescription": {
+            "account": "tdlab",
+            "fromTrigger": true,
+            "organization": "null",
+            "registry": "dockerlab.tdlab.ca:5001",
+            "repository": "buildtest",
+            "tag": "v.*"
+          },
+          "name": "1494826281215",
+          "ports": [],
+          "volumeMounts": []
+        }
+      ],
+      "credentials": "prod",
+      "dnsPolicy": "ClusterFirst",
+      "labels": {},
+      "name": "FE Integration Stage Tests",
+      "namespace": "default",
+      "nodeSelector": {},
+      "refId": "18",
+      "requisiteStageRefIds": [
+        "17"
+      ],
+      "type": "runJob",
+      "volumeSources": []
+    }
+  ],
+  "triggers": [
+    {
+      "account": "tdlab",
+      "enabled": true,
+      "fromTrigger": true,
+      "registry": "dockerlab.tdlab.ca:5001",
+      "repository": "buildtest",
+      "status": [
+        "successful"
+      ],
+      "tag": "v.*",
+      "type": "docker"
+    }
+  ],
+  "updateTs": "1528675535000"
+}
